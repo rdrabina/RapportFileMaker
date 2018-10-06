@@ -9,15 +9,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.stream.IntStream;
 
 public class FileWriter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private Dialogue dialogue = null;
+    private Dialogue dialogue;
 
     private final static String PATH = "C:\\Users\\Radzio\\Desktop\\";
     private final static String RAPPORT = "RAPPORT - ";
@@ -32,9 +29,7 @@ public class FileWriter {
     }
 
     public void makeRapportFile(Integer month){
-        if(dialogue.getMonth(month).isPresent()) {
-            saveData(makeData(month), dialogue.getMonth(month).get().toString());
-        } else dialogue.displayError(logger, "Cannot apply requested month.");
+        dialogue.getMonth(month).ifPresent(x -> saveData(makeData(month), x.toString()));
     }
 
     private byte[] makeData(Integer month){
@@ -67,7 +62,7 @@ public class FileWriter {
             dialogue.displayInfo(logger, "Writing data...");
             outputStream.write(content);
             dialogue.displayInfo(logger, "Closing file...");
-            dialogue.displayInfo(logger, "Finish");
+            dialogue.displayInfo(logger, "Finished");
         } catch (FileNotFoundException e) {
             dialogue.displayError(logger, "File not found.");
         } catch (IOException e) {
