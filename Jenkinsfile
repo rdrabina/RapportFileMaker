@@ -1,9 +1,5 @@
 node {
-  stage('Git checkout'){
-    git 'https://github.com/rdrabina/RapportFileMaker'
-  }
-  stage('Compile-package'){
-    def mvnHome = tool name: 'Maven 3.0.4', type: 'maven'
-    sh "${mvnHome}/bin/mvn package"
+  stage('Copying to server'){
+    sh "scp pom.xml ubuntu@54.173.58.166:/tmp"
   }
 }
